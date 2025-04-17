@@ -1,44 +1,156 @@
 <!DOCTYPE html>
 <html>
-
+	
 <head>
 	<title>Camelingo Home Page</title>
 	<link rel="stylesheet" href="TitlePage/TitleFormatting.css">
 	<script src="TitlePage/TitleJS.js"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
 
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: auto; }
+        .container { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; }
+        input, button { width: 95%; margin: 5px 0; padding: 10px; }
+    </style>
 </head>
 
 <body>
 	<h1 class="title">Welcome to Camelingo!</h1>
+		 <!-- Login/Register Section -->
+			<section class="auth-section" style="background-color: var(--white); padding: 3rem; border-radius: 10px; margin: 3rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+				<div class="auth-container" id="auth-container" style="max-width: 500px; margin: 0 auto;">
+					<div class="auth-tabs" style="display: flex; margin-bottom: 2rem;">
+						<button class="tab-button active" onclick="showLogin()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--primary-blue); color: white; border: none; border-radius: 5px 0 0 5px; cursor: pointer;">Login</button>
+						<button class="tab-button" onclick="showRegister()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--light-blue); color: var(--primary-blue); border: none; border-radius: 0 5px 5px 0; cursor: pointer;">Register</button>
+						</div>
+						<div class="auth-form">
+							<input type="text" id="login-username" placeholder="Username or Email" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
+							<input type="password" id="login-password" placeholder="Password" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
+							<button class="auth-button" onclick="login()" style="width: 100%; padding: 1.2rem; font-size: 1.3rem; background-color: var(--primary-blue); color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 1rem;">
+								<i class="fas fa-sign-in-alt"></i> Login
+							</button>
+								<div class="auth-footer" style="text-align: center;">
+									<a href="#" class="forgot-password" style="color: var(--primary-blue); font-size: 1.1rem;">Forgot password?</a>
+								</div>
+							</div>
+						</div>
+					</section>
+				<script>
 
-	<div class="login-section">
-        <!-- Login/Register Section -->
-		<section class="auth-section">
-			<div class="auth-container" id="auth-container">
-				<div class="auth-tabs">
-					<button class="tab-button active" onclick="showLogin()">Login</button>
-					<button class="tab-button" onclick="showRegister()">Register</button>
-				</div>
-				<div class="auth-form">
-					<input type="text" id="login-username" placeholder="Username or Email" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
-					<input type="password" id="login-password" placeholder="Password" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
-					<button class="auth-button" onclick="login()">
-						<i class="fas fa-sign-in-alt"></i> Login
-					</button>
-					<div class="auth-footer" style="text-align: center;">
-						<a href="#" class="forgot-password" style="color: var(--primary-blue); font-size: 1.1rem;">Forgot password?</a>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+    //login function with MongoDB 
+    async function login() {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        const messageElement = document.getElementById('auth-message');
+        
+        // Clear previous messages
+        messageElement.textContent = '';
+        messageElement.className = '';
+        
+        // Basic client-side validation
+        if (!username || !password) {
+            showMessage('Please enter both username and password', 'error');
+            return;
+        }
+        
+        try {
+            const response = await fetch('http://localhost:5000/login', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                showMessage('Login successful! Redirecting...', 'success');
+                
+                // Store user data
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('username', data.username);
+                
+                // Set cookie for session management (optional)
+                document.cookie = `token=${data.token}; path=/; max-age=3600`; // 1 hour
+                
+                // Redirect to dashboard after delay
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                showMessage(data.message || 'Login failed. Please try again.', 'error');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            showMessage('Network error. Please try again.', 'error');
+        }
+    }
+    
+    function showMessage(message, type) {
+        const messageElement = document.getElementById('auth-message');
+        messageElement.textContent = message;
+        messageElement.className = `${type}-message`;
+        messageElement.style.display = 'block';
+    }
+    
+    // Check if user is already logged in
+    function checkAuth() {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            // Optional: Verify token with server
+            window.location.href = 'dashboard.html';
+        }
+    }
+    
+    // Run check on page load
+    window.onload = checkAuth;
+</script>
+
 	
 	<div class="nav">
-		<button class="button button1" onclick="redirectToLibraryBrowser()">Browse Library</button>
-		<button class="button button2" onclick="redirectToDeckCreator()">Create New Deck</button>
-		<button class="button button3" onclick="redirectToDeckBrowser()">Browse Decks</button>
+		<button class="button button1" onclick="placeholder()">Browse Library</button>
+		<button class="button button2" onclick="placeholder()">Create New Deck</button>
+		<button class="button button3" onclick="placeholder()">Browse Decks</button>
 	</div>
+
+	<div class = "icon-nav">
+			<img src="TitlePage/LogoIcon.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/LogoIcon.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/LogoIcon.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
+	</div>
+
+
+
+	<!-- account and public decks -->
+	<section class="final-cta" style="background: var(--primary-blue); padding: 4rem; border-radius: 10px; text-align: center; margin: 4rem 0;">
+		<h2 style="font-size: 2.5rem; color: var(--white); margin-bottom: 1.5rem;">Ready to Transform Your Study Habits?</h2>
+		<p style="font-size: 1.5rem; color: var(--light-blue); margin-bottom: 2.5rem;">Join thousands of students who are studying smarter with Camelingo</p>
+		<div class="cta-buttons" style="display: flex; justify-content: center; gap: 1.5rem;">
+			<button class="cta-button primary" onclick="redirectToRegister()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+				<i class="fas fa-user-plus"></i> Create Free Account
+			</button>
+			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+				<i class="fas fa-book-open"></i> Browse Public Decks
+			</button>
+		</div>
+	</section>
+</main>
+
+<footer class="main-footer" style="background: var(--text-dark); color: var(--white); padding: 3rem 0 1rem;">
+	<div class="footer-content" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+		<div style="text-align: center; margin-bottom: 2rem;">
+			<h3 style="font-size: 2rem; margin-bottom: 0.5rem;">Camelingo</h3>
+			<p style="font-size: 1.2rem; color: #aaa;">Smart Learning for Students</p>
+		</div>
+		<div style="text-align: center; margin-top: 2rem;">
+			<p style="font-size: 1.1rem; color: #aaa;">&copy; 2025 Camelingo. All rights reserved.</p>
+		</div>
+	</div>
+</footer>
+
 
 	<div class="reviews">
 		<h1>Satisfied Customers:</h1>

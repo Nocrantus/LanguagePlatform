@@ -1,53 +1,45 @@
 const express = require('express');
-const fs = require('fs');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const connectDB = require('./config/db');
+const authRoutes = require('./routes/auth');
+const authenticateToken = require('./middlewares/auth');
 const cors = require('cors');
 
+
+
+require('dotenv').config();
+
 const app = express();
-//connect tp mongodb
-const dbURI = 'mongodb+srv://jrondon:<G@Cq8M8zEn7tZr5>@cluster0.ip2kygw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+
+
+// Connect to MongoDB
+connectDB();
+
+// Middleware
+
 app.use(express.json());
 app.use(cors());
 
-const USERS_FILE = './users.json';
+// Routes
+app.use('/api/auth', authRoutes);
 
-// Load users from JSON file
-const loadUsers = () => {
-    if (!fs.existsSync(USERS_FILE)) return [];
-    return JSON.parse(fs.readFileSync(USERS_FILE));
-};
-
-// Save users to JSON file
-const saveUsers = (users) => {
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
-};
-
-app.post('/register', async (req, res) => {
-    const { username, password } = req.body;
-    let users = loadUsers();
-    
-    if (users.some(user => user.username === username)) {
-        return res.status(400).json({ message: 'User already exists' });
+// Protected route example
+app.get('/api/profile', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    users.push({ username, password: hashedPassword });
-    saveUsers(users);
-    res.json({ message: 'User registered' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    let users = loadUsers();
-    
-    const user = users.find(user => user.username === username);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ username }, 'secret', { expiresIn: '1h' });
-    res.json({ token });
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
 });
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
