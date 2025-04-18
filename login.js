@@ -10,10 +10,18 @@ require('dotenv').config();
 
 const app = express();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fc02b444ab6b7fb8b3358db033b487e71bff86d
 // Connect to MongoDB
 connectDB();
 
 // Middleware
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2fc02b444ab6b7fb8b3358db033b487e71bff86d
 app.use(express.json());
 app.use(cors());
 

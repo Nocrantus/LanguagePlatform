@@ -188,6 +188,7 @@
     border: 1px solid #388e3c;
 }
 
+<<<<<<< HEAD
   .icon-nav{
 	display:flex;
 	justify-content:center;
@@ -207,3 +208,10 @@
   .nav-icon:hover{
 		transform:scale(1.1);
   }
+=======
+/* Forgot Password Link */
+.forgot-password {
+    color: var(--primary-blue); 
+    font-size: 1.1rem;
+}
+>>>>>>> 2fc02b444ab6b7fb8b3358db033b487e71bff86d
