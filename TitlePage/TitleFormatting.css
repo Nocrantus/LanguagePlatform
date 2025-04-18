@@ -1,8 +1,6 @@
-test
 .title {
 	font-size:5rem;
 	left:30%; 
-	text-decoration-line: underline;
 	font-family: 'Fredoka', sans-serif;
 	text-align: center;
 	color: #57b7e4;
@@ -54,7 +52,6 @@ test
 	margin-bottom: 16px;
 	margin-top: 16px;
 	top:15rem;
-	
 }
 
 .button3 {
@@ -62,14 +59,14 @@ test
 	color: black; 
 	border: 2px solid blue;
 	padding: 16px 26px;
-	margin-top: 16px;
+	margin-top: 32px;
 	top:20rem;
 	
 }
 
 .reviews {
 	position:absolute;
-	top:300px;
+	top:350px;
 	left:80px;
 	color: navy;
 }
@@ -80,7 +77,6 @@ test
 	position:relative;
 	top:5px;
 	left:5px;
-	color: navy;
 }
 
 .reviews div {
@@ -88,101 +84,126 @@ test
 	height:50px;
 	border: 1px solid black;
 	margin-bottom:5px;
-	color: navy;
 }
-
 
 .reviews p {
 	display:inline;
 	position:relative;
 	left:20px;
 	bottom:10px;
-	color: navy;
 }
 
-.mission {
-	display:block;
-	position:absolute;
-	top:15rem;
-	right:5rem;
-}
 
-/* Login Section Container */
-.auth-section {
-    background-color: var(--white); 
-    padding: 3rem; 
-    border-radius: 10px; 
-    margin: 3rem 0; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-	color: var(--white); 
-}
-
-/* Login Form Container */
-.auth-container {
-    max-width: 500px; 
-    margin: auto; /* Centers the form */
-}
-
-/* Tab Buttons (Login/Register) */
-.auth-tabs {
-    display: flex; 
-    margin-bottom: 2rem;
-	width:542.39px;
-}
-
-.tab-button {
-    flex: 1; 
-	padding: 1.2rem; 
-	font-size: 1.3rem; 
+:root {
+	--primary-blue: #4285f4;
+	--light-blue: #e8f0fe;
+	--white: #ffffff;
+	--error-red: #ea4335;
+	--success-green: #34a853;
+  }
+  
+  .auth-section {
+	background-color: var(--white);
+	padding: 3rem;
+	border-radius: 10px;
+	margin: 3rem 0;
+	box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  }
+  
+  .auth-container {
+	max-width: 500px;
+	margin: 0 auto;
+  }
+  
+  .auth-tabs {
+	display: flex;
+	margin-bottom: 2rem;
+  }
+  
+  .tab-button {
+	flex: 1;
+	padding: 1.2rem;
+	font-size: 1.3rem;
+	border: none;
+	cursor: pointer;
+  }
+  
+  .tab-button.active {
+	background: var(--primary-blue);
+	color: white;
+	border-radius: 5px 0 0 5px;
+  }
+  
+  .tab-button.inactive {
 	background: var(--light-blue); 
 	color: var(--primary-blue); 
-	border: none; 
-	border-radius: 5px 5px 5px 5px; 
-	cursor: pointer;
-	border:1px solid black;
-}
-
-.tab-button .active {
-    flex: 1; 
-	padding: 1.2rem; 
-	font-size: 1.3rem; 
-	background: var(--primary-blue); 
-	color: white; border: none; 
+	border-radius: 0 5px 5px 0; 
+	left: 42.39px;
+  }
+  
+  .auth-form input {
+	width: 100%;
+	padding: 1.2rem;
+	margin-bottom: 1.5rem;
+	font-size: 1.2rem;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+  }
+  
+  .auth-button {
+	width: 100%;
+	padding: 1.2rem;
+	font-size: 1.3rem;
+	background-color: var(--primary-blue);
+	color: white;
 	border: none;
-	border-radius: 5px 5px 5px 5px; 
+	border-radius: 5px;
 	cursor: pointer;
-}
-
-.tab-button:not(.active) {
-	position:relative;
-    background: var(--light-blue); 
-    color: var(--primary-blue); 
-}
-
-/* Form Elements */
-.auth-form input {
-    width: 100%; 
-    padding: 1.2rem; 
-    margin-bottom: 1.5rem; 
-    font-size: 1.2rem; 
-    border: 2px solid #ddd; 
-    border-radius: 5px;
-}
-
-.auth-button {
-    width: 100%; 
-	padding: 1.2rem; 
-	font-size: 1.3rem; 
-	background-color: var(--primary-blue); 
-	color: white; 
-	border: none; 
-	border-radius: 5px; 
-	cursor: pointer; 
 	margin-bottom: 1rem;
+  }
+  
+  .auth-footer {
+	text-align: center;
+  }
+  
+  .forgot-password {
+	color: var(--primary-blue);
+	font-size: 1.1rem;
+	cursor: pointer;
+  }
+  
+  .message {
+	text-align: center;
+	margin-top: 1rem;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+	.success-message {
+    background-color: #e8f5e9;
+    color: #388e3c;
+    border: 1px solid #388e3c;
 }
 
-/* Forgot Password Link */
-.forgot-password {
-    color: var(--primary-blue); 
-    font-size: 1.1rem;
-}
+  .icon-nav{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	gap: 40px;
+	margin-top: 2rem;
+  }
+
+  .nav-icon{
+	width:100px;
+	height:auto;
+	cursor:pointer;
+	transition: transform 0.2s ease;
+
+  }
+
+  .nav-icon:hover{
+		transform:scale(1.1);
+  }

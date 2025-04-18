@@ -1,15 +1,31 @@
 function redirectToDeckBrowser() {
+	if (isLoggedIn) {
 	window.location.href = "./DeckBrowser/DeckBrowser.html";
+	} else {
+		placeholder();
+	}
 }
 
 function redirectToDeckCreator() {
-	window.location.href = "./DeckCreator/DeckCreator.html";
+	if (isLoggedIn) {
+		window.location.href = "./DeckCreator/DeckCreator.html";
+		} else {
+			placeholder();
+		}
 }
 
 function redirectToLibraryBrowser() {
-	window.location.href = "./LibraryBrowser/LibraryBrowser.html";
+	if (isLoggedIn) {
+		window.location.href = "./LibraryBrowser/LibraryBrowser.html";
+		} else {
+			placeholder();
+		}
 }
 
 function redirectToLogin() {
 	window.location.href = "./login.html";
+}
+
+function placeholder(event){
+	event.preventDefault();
 }
