@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Study Guide | Camelingo</title>
+  <link rel="stylesheet" href="TitleFormatting.css">
+</head>
+<body>
+  <div class="top-bar">
+    <h1>AI Study Guide Generator</h1>
+    <button class="btn btn-outline" onclick="logout()">Log Out</button>
+  </div>
+  
+  <div class="container">
+    <div class="card">
+      <h2>Create New Study Guide</h2>
+      
+      <div class="form-group">
+        <label for="guide-title">Title</label>
+        <input type="text" id="guide-title" class="form-input" placeholder="Enter guide title">
+      </div>
+      
+      <div class="form-group">
+        <label for="guide-subject">Subject</label>
+        <select id="guide-subject" class="form-input">
+          <option value="general">General</option>
+          <option value="math">Mathematics</option>
+          <option value="science">Science</option>
+          <option value="history">History</option>
+          <option value="language">Language</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="guide-content">Your Notes</label>
+        <textarea id="guide-content" class="form-input" rows="10" 
+          placeholder="Paste your notes here or type them out..."></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="guide-focus">Focus Areas (comma separated)</label>
+        <input type="text" id="guide-focus" class="form-input" 
+          placeholder="e.g., key concepts, important dates, formulas">
+      </div>
+      
+      <button class="btn btn-primary" onclick="generateGuide()">Generate Study Guide</button>
+    </div>
+    
+    <div class="card" id="result-container" style="display:none;">
+      <h2>Your AI-Generated Study Guide</h2>
+      <div id="guide-result" class="guide-content"></div>
+      <button class="btn btn-outline" onclick="saveGuide()">Save to Library</button>
+    </div>
+  </div>
+
+  <script>
+    async function generateGuide() {
+      const title = document.getElementById('guide-title').value;
+      const content = document.getElementById('guide-content').value;
+      const subject = document.getElementById('guide-subject').value;
+      const focus = document.getElementById('guide-focus').value;
+      
+      if (!content) {
+        alert('Please enter some notes to generate a guide');
+        return;
+      }
+      
+      try {
+        // Show loading state
+        const btn = document.querySelector('#result-container button');
+        btn.textContent = 'Generating...';
+        btn.disabled = true;
+        
+        const response = await fetch('/api/ai/generate-guide', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            subject,
+            focusAreas: focus.split(',').map(f => f.trim())
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          document.getElementById('guide-result').innerHTML = result.guide;
+          document.getElementById('result-container').style.display = 'block';
+        } else {
+          throw new Error('Failed to generate guide');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to generate guide. Please try again.');
+      } finally {
+        btn.textContent = 'Generate Study Guide';
+        btn.disabled = false;
+      }
+    }
+    
+    async function saveGuide() {
+      const title = document.getElementById('guide-title').value;
+      const content = document.getElementById('guide-result').innerHTML;
+      
+      try {
+        const response = await fetch('/api/guides', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            type: 'studyguide'
+          })
+        });
+        
+        if (response.ok) {
+          alert('Study guide saved successfully!');
+        } else {
+          throw new Error('Failed to save guide');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to save guide. Please try again.');
+      }
+    }
+    
+    function logout() {
+      localStorage.removeItem('authToken');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

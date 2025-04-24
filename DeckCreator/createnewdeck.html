@@ -1,0 +1,519 @@
+<!--DEPRECATED-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Navigation Bar</title>
+    <link rel="stylesheet" href="Navigation.css">
+    <style>
+    	h1 {
+        	color: navy;
+        }
+    	body {
+            background-color: #43B6FF; 
+        }
+       
+        .menuPos {
+            position: absolute;
+        }
+
+        .second-level {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 150px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none;
+            
+        }
+
+        .second-level > li {
+            position: relative;
+            height: 30px;
+            background: blue;
+        }
+
+        .second-level > li:hover {
+            background: navy;
+        }
+
+        .top-level {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            
+        }
+
+        .top-level > li {
+            position: relative;
+            float: left;
+            height: 30px;
+            width: 150px;
+            background: navy;
+            text-align: center;
+            
+        }
+
+        .top-level > li:hover {
+            background: navy;
+        }
+
+        .top-level li:hover > ul {
+            display: inline;
+            
+        }
+
+        .top-level a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            line-height: 30px;
+        }
+
+        .top-level a:hover {
+            color: white;
+        }
+
+        
+        .flashcard-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            color: navy;
+        }
+
+        .flashcard {
+            width: 150px;
+            height: 100px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            background: lightgray;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: white;
+        }
+
+   
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 5px solid navy;
+        }
+
+  
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: navy;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+    
+   
+</head>
+
+<body>
+    <h1>Create New Deck</h1>
+	
+   
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+
+    <div class="menuPos">
+        <ul class="top-level">
+            <li>
+                <a href="#">Select Type</a>
+                <ul class="second-level">
+                    <li><a href="#" id="flashcard-btn">Flashcards</a></li>
+                    <li><a href="../U1/RainbowRepo.png">Study Guide</a></li>
+                    <li><a href="../U1/RainbowNetwork.png">Practice Test</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <br><br>
+
+    <label for="name">Name of Deck:</label>
+    <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="10"/>
+
+    <br><br><br>
+
+    <div class="flashcard-container" id="flashcards">
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Albert Einstein</div>
+                <div class="flashcard-back">Famous scientist</div>
+            </div>
+        </div>
+
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Isaac Newton</div>
+                <div class="flashcard-back">Developed the laws of motion</div>
+            </div>
+        </div>
+
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Nikola Tesla</div>
+                <div class="flashcard-back">Pioneer of electricity</div>
+            </div>
+        </div>
+    </div>
+
+   
+    <table id="terms-table">
+        <thead>
+            <tr>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Albert Einstein</td>
+                <td>Famous scientist</td>
+            </tr>
+            <tr>
+                <td>Isaac Newton</td>
+                <td>Developed the laws of motion</td>
+            </tr>
+            <tr>
+                <td>Nikola Tesla</td>
+                <td>Pioneer of electricity</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+   
+        document.getElementById("flashcard-btn").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent link from navigating
+            document.getElementById("terms-table").style.display = "none"; // Hide table
+            document.getElementById("flashcards").style.display = "flex"; // Show flashcards
+        });
+
+        // Function to flip the flashcard
+        function flipCard(card) {
+            card.classList.toggle("flipped");
+        }
+
+        // Save deck name to localStorage
+        document.getElementById("name").addEventListener("input", function() {
+            localStorage.setItem("deckName", this.value);
+        });
+
+        // Load deck name when page loads
+        window.onload = function() {
+            const savedName = localStorage.getItem("deckName");
+            if (savedName) {
+                document.getElementById("name").value = savedName;
+            }
+        };
+
+        // Log out function
+        function logout() {
+            localStorage.removeItem("deckName"); // Clear saved deck name
+            window.location.href = "login.html"; // Redirect to login page 
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Navigation Bar</title>
+    <link rel="stylesheet" href="Navigation.css">
+    <style>
+        /* Navigation Menu */
+        .menuPos {
+            position: absolute;
+        }
+
+        .second-level {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 150px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none;
+        }
+
+        .second-level > li {
+            position: relative;
+            height: 30px;
+            background: #999999;
+        }
+
+        .second-level > li:hover {
+            background: #CCCCCC;
+        }
+
+        .top-level {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .top-level > li {
+            position: relative;
+            float: left;
+            height: 30px;
+            width: 150px;
+            background: #333;
+            text-align: center;
+        }
+
+        .top-level > li:hover {
+            background: red;
+        }
+
+        .top-level li:hover > ul {
+            display: inline;
+        }
+
+        .top-level a {
+            color: #FFFFFF;
+            text-decoration: none;
+            display: block;
+            line-height: 30px;
+        }
+
+        .top-level a:hover {
+            color: #000000;
+        }
+
+        /* Flashcard Styling */
+        .flashcard-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .flashcard {
+            width: 150px;
+            height: 100px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            background: lightgray;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: white;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid black;
+        }
+
+        /* Log Out Button */
+        .logout-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: gray;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Create New Deck</h1>
+
+    <!-- Logout Button -->
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+
+    <div class="menuPos">
+        <ul class="top-level">
+            <li>
+                <a href="#">Select Type</a>
+                <ul class="second-level">
+                    <li><a href="#" id="flashcard-btn">Flashcards</a></li>
+                    <li><a href="../U1/RainbowRepo.png">Study Guide</a></li>
+                    <li><a href="../U1/RainbowNetwork.png">Practice Test</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <br><br>
+
+    <label for="name">Name of Deck:</label>
+    <input type="text" id="name" name="name" required minlength="4" maxlength="8" size="10"/>
+
+    <br><br><br>
+
+    <!-- Flashcards Section -->
+    <div class="flashcard-container" id="flashcards">
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Albert Einstein</div>
+                <div class="flashcard-back">Famous scientist</div>
+            </div>
+        </div>
+
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Isaac Newton</div>
+                <div class="flashcard-back">Developed the laws of motion</div>
+            </div>
+        </div>
+
+        <div class="flashcard" onclick="flipCard(this)">
+            <div class="flashcard-inner">
+                <div class="flashcard-front">Nikola Tesla</div>
+                <div class="flashcard-back">Pioneer of electricity</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <table id="terms-table">
+        <thead>
+            <tr>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Albert Einstein</td>
+                <td>Famous scientist</td>
+            </tr>
+            <tr>
+                <td>Isaac Newton</td>
+                <td>Developed the laws of motion</td>
+            </tr>
+            <tr>
+                <td>Nikola Tesla</td>
+                <td>Pioneer of electricity</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // When Flashcards is clicked, switch view from table to flashcards
+        document.getElementById("flashcard-btn").addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent link from navigating
+            document.getElementById("terms-table").style.display = "none"; // Hide table
+            document.getElementById("flashcards").style.display = "flex"; // Show flashcards
+        });
+
+        // Function to flip the flashcard
+        function flipCard(card) {
+            card.classList.toggle("flipped");
+        }
+
+        // Save deck name to localStorage
+        document.getElementById("name").addEventListener("input", function() {
+            localStorage.setItem("deckName", this.value);
+        });
+
+        // Load deck name when page loads
+        window.onload = function() {
+            const savedName = localStorage.getItem("deckName");
+            if (savedName) {
+                document.getElementById("name").value = savedName;
+            }
+        };
+
+        // Log out function
+        function logout() {
+            localStorage.removeItem("deckName"); // Clear saved deck name
+            window.location.href = "login.html"; // Redirect to login page 
+        }
+    </script>
+</body>
+</html>

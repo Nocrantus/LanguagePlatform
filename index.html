@@ -9,137 +9,152 @@
 
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: Arial, sans-serif; text-align: auto; }
-        .container { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; }
-        input, button { width: 95%; margin: 5px 0; padding: 10px; }
-    </style>
+	<style>
+		body { font-family: Arial, sans-serif; text-align: auto; }
+		.container { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; }
+		input, button { width: 95%; margin: 5px 0; padding: 10px; }
+		.auth-box { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; }
+		.form-group { margin-bottom: 15px; }
+		input { width: 100%; padding: 8px; }
+		button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; }
+		.hidden { display: none; }
+	</style>
+</head>
+
 </head>
 
 <body>
-	<div class="topOfPage">
 	<h1 class="title">Welcome to Camelingo!</h1>
-		 <!-- Login/Register Section -->
-			<section class="auth-section" style="background-color: var(--white); padding: 3rem; border-radius: 10px; margin: 3rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-				<div class="auth-container" id="auth-container">
-					<div class="auth-tabs" style="display: flex; margin-bottom: 2rem;">
-						<button class="tab-button active" onclick="showLogin()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--primary-blue); color: white; border: none; border-radius: 5px 0 0 5px; cursor: pointer;">Login</button>
-						<button class="tab-button" onclick="showRegister()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--light-blue); color: var(--primary-blue); border: none; border-radius: 0 5px 5px 0; cursor: pointer;">Register</button>
-						</div>
-						<div class="auth-form">
-							<input type="text" id="login-username" placeholder="Username or Email">
-							<input type="password" id="login-password" placeholder="Password">
-							<button class="auth-button" onclick="login()" style="width: 100%; padding: 1.2rem; font-size: 1.3rem; background-color: var(--primary-blue); color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 1rem;">
-								<i class="fas fa-sign-in-alt"></i> Login
-							</button>
-								<div class="auth-footer" style="text-align: center;">
-									<a href="#" class="forgot-password" style="color: var(--primary-blue); font-size: 1.1rem;">Forgot password?</a>
-								</div>
-							</div>
-						</div>
-					</section>
-		<div class="reviews">
-		<h1>Satisfied Customers:</h1>
-		
-		<div class="review1">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User</p>
+	<div class="auth-box">
+		<!-- Login Form -->
+		<div id="login-form">
+		  <h2>Login</h2>
+		  <div class="form-group">
+			<input type="email" id="login-email" placeholder="Email">
+		  </div>
+		  <div class="form-group">
+			<input type="password" id="login-password" placeholder="Password">
+		  </div>
+		  <button onclick="login()">Login</button>
+		  <p>
+			<a href="#" onclick="showForm('register')">Register</a> | 
+			<a href="#" onclick="showForm('forgot')">Forgot Password?</a>
+		  </p>
 		</div>
-		
-		<div class="review2">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User2</p>
+	  
+		<!-- Register Form -->
+		<div id="register-form" class="hidden">
+		  <h2>Register</h2>
+		  <div class="form-group">
+			<input type="email" id="register-email" placeholder="Email">
+		  </div>
+		  <div class="form-group">
+			<input type="password" id="register-password" placeholder="Password">
+		  </div>
+		  <button onclick="register()">Register</button>
+		  <p><a href="#" onclick="showForm('login')">Back to Login</a></p>
 		</div>
-		
-		<div class="review3">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User3</p>
+	  
+		<!-- Forgot Password Form -->
+		<div id="forgot-form" class="hidden">
+		  <h2>Reset Password</h2>
+		  <div class="form-group">
+			<input type="email" id="forgot-email" placeholder="Email">
+		  </div>
+		  <button onclick="sendReset()">Send Reset Link</button>
+		  <p><a href="#" onclick="showForm('login')">Back to Login</a></p>
 		</div>
-	</div>
-	</div>
-<script>
+	  </div>
+	  
+	  <script>
+		function showForm(formType) {
+		  document.querySelectorAll('[id$="-form"]').forEach(el => el.classList.add('hidden'));
+		  document.getElementById(`${formType}-form`).classList.remove('hidden');
+		}
+	  
+		async function login() {
+		  const email = document.getElementById('login-email').value;
+		  const password = document.getElementById('login-password').value;
+	  
+		  try {
+			const response = await fetch('/api/auth/login', {
+			  method: 'POST',
+			  headers: { 'Content-Type': 'application/json' },
+			  body: JSON.stringify({ email, password })
+			});
+	  
+			const data = await response.json();
+			if (response.ok) {
+			  localStorage.setItem('token', data.token);
+			  window.location.href = '/dashboard';
+			} else {
+			  alert(data.message);
+			}
+		  } catch (err) {
+			alert('Login failed');
+		  }
+		}
+	  
+		async function register() {
+		  const email = document.getElementById('register-email').value;
+		  const password = document.getElementById('register-password').value;
+	  
+		  try {
+			const response = await fetch('/api/auth/register', {
+			  method: 'POST',
+			  headers: { 'Content-Type': 'application/json' },
+			  body: JSON.stringify({ email, password })
+			});
+	  
+			if (response.ok) {
+			  alert('Registration successful! Please login.');
+			  showForm('login');
+			} else {
+			  const data = await response.json();
+			  alert(data.message);
+			}
+		  } catch (err) {
+			alert('Registration failed');
+		  }
+		}
+	  
+		async function sendReset() {
+		  const email = document.getElementById('forgot-email').value;
+		  
+		  try {
+			const response = await fetch('/api/auth/forgot-password', {
+			  method: 'POST',
+			  headers: { 'Content-Type': 'application/json' },
+			  body: JSON.stringify({ email })
+			});
+	  
+			if (response.ok) {
+			  alert('Reset instructions sent to your email');
+			  showForm('login');
+			} else {
+			  const data = await response.json();
+			  alert(data.message);
+			}
+		  } catch (err) {
+			alert('Password reset failed');
+		  }
+		}
+	  </script>
 
-    //login function with MongoDB 
-    async function login() {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-        const messageElement = document.getElementById('auth-message');
-        
-        // Clear previous messages
-        messageElement.textContent = '';
-        messageElement.className = '';
-        
-        // Basic client-side validation
-        if (!username || !password) {
-            showMessage('Please enter both username and password', 'error');
-            return;
-        }
-        
-        try {
-            const response = await fetch('http://localhost:5000/login', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
-                showMessage('Login successful! Redirecting...', 'success');
-                
-                // Store user data
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('username', data.username);
-                
-                // Set cookie for session management (optional)
-                document.cookie = `token=${data.token}; path=/; max-age=3600`; // 1 hour
-                
-                // Redirect to dashboard after delay
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-            } else {
-                showMessage(data.message || 'Login failed. Please try again.', 'error');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            showMessage('Network error. Please try again.', 'error');
-        }
-    }
-    
-    function showMessage(message, type) {
-        const messageElement = document.getElementById('auth-message');
-        messageElement.textContent = message;
-        messageElement.className = `${type}-message`;
-        messageElement.style.display = 'block';
-    }
-    
-    // Check if user is already logged in
-    function checkAuth() {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            // Optional: Verify token with server
-            window.location.href = 'dashboard.html';
-        }
-    }
-    
-    // Run check on page load
-    window.onload = checkAuth;
-</script>
-
+<script src="server.js"></script>
+				
+				
 	
 	<div class="nav">
-		<button class="button button1" onclick="placeholder()">Browse Library</button>
-		<button class="button button2" onclick="placeholder()">Create New Deck</button>
-		<button class="button button3" onclick="placeholder()">Browse Decks</button>
+		<button class="btn btn-primary" onclick="placeholder()">Browse Library</button>
+		<button class="btn btn-primary" onclick="placeholder()">Create New Deck</button>
+		<button class="btn btn-primary" onclick="placeholder()">Browse Decks</button>
 	</div>
 
 	<div class = "icon-nav">
-			<img src="TitlePage/Library.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/BrowseDecks.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/Flashcards.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/LogoIcon.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/LogoIcon.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/LogoIcon.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
 	</div>
 
 
@@ -149,10 +164,10 @@
 		<h2 style="font-size: 2.5rem; color: var(--white); margin-bottom: 1.5rem;">Ready to Transform Your Study Habits?</h2>
 		<p style="font-size: 1.5rem; color: var(--light-blue); margin-bottom: 2.5rem;">Join thousands of students who are studying smarter with Camelingo</p>
 		<div class="cta-buttons" style="display: flex; justify-content: center; gap: 1.5rem;">
-			<button class="cta-button primary" onclick="placeholder()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+			<button class="cta-button primary" onclick="redirectToRegister()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
 				<i class="fas fa-user-plus"></i> Create Free Account
 			</button>
-			<button class="cta-button secondary" onclick="placeholder()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
 				<i class="fas fa-book-open"></i> Browse Public Decks
 			</button>
 		</div>
@@ -170,6 +185,85 @@
 		</div>
 	</div>
 </footer>
+
+
+	<div class="reviews">
+		<h1>Satisfied Customers:</h1>
+		
+		<div class="review1">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User</p>
+		</div>
+		
+		<div class="review2">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User2</p>
+		</div>
+		
+		<div class="review3">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User3</p>
+		</div>
+		
+	</div>
+
+
+	<!-- Previous HTML content remains the same -->
+
+<!-- Move this script to the bottom of the body -->
+<script>
+    //login function with MongoDB 
+    async function login() {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Basic client-side validation
+        if (!username || !password) {
+            alert('Please enter both username and password');
+            return;
+        }
+        
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok) {
+                // Store user data
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('username', data.username);
+                
+                // Redirect to dashboard
+                window.location.href = 'LibraryBrowser.html';
+            } else {
+                alert(data.message || 'Login failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert('Network error. Please try again.');
+        }
+    }
+
+    // Check if user is already logged in
+    function checkAuth() {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            window.location.href = 'LibraryBrowser.html';
+        }
+    }
+    
+    // Run check on page load
+    window.onload = checkAuth;
+</script>
+
+</body>
+</html>
 
 </body>
 </html>

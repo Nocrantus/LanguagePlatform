@@ -1,86 +1,50 @@
-<<<<<<< HEAD
-const mongoose = require('mongoose');
+const db = require('../database');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  username: { 
-    type: String, 
-    required: true, 
-    unique: true,
-    trim: true,
-    minlength: 3,
-    maxlength: 30
-  },
-  password: { 
-    type: String, 
-    required: true,
-    minlength: 6
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
+class User {
+  static findByEmail(email) {
+    return db.prepare('SELECT * FROM users WHERE email = ?').get(email);
   }
-});
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
+  static create(email, password) {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const result = db.prepare(`
+      INSERT INTO users (email, password) 
+      VALUES (?, ?)
+    `).run(email, hashedPassword);
+    return this.findByEmail(email);
   }
-});
 
-// Method to compare passwords
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
-
-=======
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-
-const userSchema = new mongoose.Schema({
-  username: { 
-    type: String, 
-    required: true, 
-    unique: true,
-    trim: true,
-    minlength: 3,
-    maxlength: 30
-  },
-  password: { 
-    type: String, 
-    required: true,
-    minlength: 6
-  },
-  createdAt: { 
-    type: Date, 
-    default: Date.now 
+  static updateResetToken(email, token) {
+    const expires = new Date(Date.now() + 3600000); // 1 hour
+    db.prepare(`
+      UPDATE users 
+      SET resetToken = ?, resetExpires = ?
+      WHERE email = ?
+    `).run(token, expires.toISOString(), email);
   }
-});
 
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
+  static resetPassword(token, newPassword) {
+    const user = db.prepare(`
+      SELECT * FROM users 
+      WHERE resetToken = ? AND resetExpires > datetime('now')
+    `).get(token);
+
+    if (!user) return null;
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    db.prepare(`
+      UPDATE users 
+      SET password = ?, resetToken = NULL, resetExpires = NULL 
+      WHERE id = ?
+    `).run(hashedPassword, user.id);
+
+    return this.findByEmail(user.email);
   }
-});
 
-// Method to compare passwords
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
+  static comparePassword(candidatePassword, hashedPassword) {
+    return bcrypt.compareSync(candidatePassword, hashedPassword);
+  }
+}
 
->>>>>>> 2fc02b444ab6b7fb8b3358db033b487e71bff86d
-module.exports = mongoose.model('User', userSchema);
+module.exports = User;
