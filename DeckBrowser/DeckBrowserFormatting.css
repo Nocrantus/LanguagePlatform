@@ -43,30 +43,3 @@ table, th, td {
 td{
 	width:200px;
 }
-
-
-
-
-.accountSection
-{
-	background-color: lightgrey;
-	width: 65px;
-	border-left: 2px solid black;
-	border-bottom: 2px solid black;
-	padding: 10px;
-	margin:0px;
-	position:absolute;
-	top: 0px;
-	right: 0px;
-}
-
-.logOut 
-{
-	padding-left:9.47px;
-	padding-right:9.47px;
-	margin-bottom:5px;
-}
-
-
-
-
