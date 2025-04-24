@@ -17,17 +17,18 @@
 </head>
 
 <body>
+	<div class="topOfPage">
 	<h1 class="title">Welcome to Camelingo!</h1>
 		 <!-- Login/Register Section -->
 			<section class="auth-section" style="background-color: var(--white); padding: 3rem; border-radius: 10px; margin: 3rem 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-				<div class="auth-container" id="auth-container" style="max-width: 500px; margin: 0 auto;">
+				<div class="auth-container" id="auth-container">
 					<div class="auth-tabs" style="display: flex; margin-bottom: 2rem;">
 						<button class="tab-button active" onclick="showLogin()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--primary-blue); color: white; border: none; border-radius: 5px 0 0 5px; cursor: pointer;">Login</button>
 						<button class="tab-button" onclick="showRegister()" style="flex: 1; padding: 1.2rem; font-size: 1.3rem; background: var(--light-blue); color: var(--primary-blue); border: none; border-radius: 0 5px 5px 0; cursor: pointer;">Register</button>
 						</div>
 						<div class="auth-form">
-							<input type="text" id="login-username" placeholder="Username or Email" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
-							<input type="password" id="login-password" placeholder="Password" style="width: 100%; padding: 1.2rem; margin-bottom: 1.5rem; font-size: 1.2rem; border: 2px solid #ddd; border-radius: 5px;">
+							<input type="text" id="login-username" placeholder="Username or Email">
+							<input type="password" id="login-password" placeholder="Password">
 							<button class="auth-button" onclick="login()" style="width: 100%; padding: 1.2rem; font-size: 1.3rem; background-color: var(--primary-blue); color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 1rem;">
 								<i class="fas fa-sign-in-alt"></i> Login
 							</button>
@@ -37,7 +38,26 @@
 							</div>
 						</div>
 					</section>
-				<script>
+		<div class="reviews">
+		<h1>Satisfied Customers:</h1>
+		
+		<div class="review1">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User</p>
+		</div>
+		
+		<div class="review2">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User2</p>
+		</div>
+		
+		<div class="review3">
+			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
+			<p>I love the website -User3</p>
+		</div>
+	</div>
+	</div>
+<script>
 
     //login function with MongoDB 
     async function login() {
@@ -117,9 +137,9 @@
 	</div>
 
 	<div class = "icon-nav">
-			<img src="TitlePage/LogoIcon.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/LogoIcon.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/LogoIcon.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/Library.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/BrowseDecks.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
+			<img src="TitlePage/Flashcards.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
 	</div>
 
 
@@ -129,10 +149,10 @@
 		<h2 style="font-size: 2.5rem; color: var(--white); margin-bottom: 1.5rem;">Ready to Transform Your Study Habits?</h2>
 		<p style="font-size: 1.5rem; color: var(--light-blue); margin-bottom: 2.5rem;">Join thousands of students who are studying smarter with Camelingo</p>
 		<div class="cta-buttons" style="display: flex; justify-content: center; gap: 1.5rem;">
-			<button class="cta-button primary" onclick="redirectToRegister()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+			<button class="cta-button primary" onclick="placeholder()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
 				<i class="fas fa-user-plus"></i> Create Free Account
 			</button>
-			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+			<button class="cta-button secondary" onclick="placeholder()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
 				<i class="fas fa-book-open"></i> Browse Public Decks
 			</button>
 		</div>
@@ -150,27 +170,6 @@
 		</div>
 	</div>
 </footer>
-
-
-	<div class="reviews">
-		<h1>Satisfied Customers:</h1>
-		
-		<div class="review1">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User</p>
-		</div>
-		
-		<div class="review2">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User2</p>
-		</div>
-		
-		<div class="review3">
-			<img src="TitlePage/ProfilePicture.jpg" class="profilePic">
-			<p>I love the website -User3</p>
-		</div>
-		
-	</div>
 
 </body>
 </html>

@@ -65,10 +65,14 @@
 }
 
 .reviews {
+	width:350px;
+	top:300px;
 	position:absolute;
-	top:350px;
 	left:80px;
 	color: navy;
+	z-index: 0;
+	background-color:red;
+	
 }
 
 .reviews img {
@@ -111,8 +115,11 @@
   }
   
   .auth-container {
+	position:relative; 
 	max-width: 500px;
 	margin: 0 auto;
+	background-color: white;
+	z-index: 1;
   }
   
   .auth-tabs {
@@ -139,6 +146,24 @@
 	color: var(--primary-blue); 
 	border-radius: 0 5px 5px 0; 
 	left: 42.39px;
+  }
+
+  #login-username{
+	width: 457.61px; 
+	padding: 1.2rem; 
+	margin-bottom: 1.5rem; 
+	font-size: 1.2rem; 
+	border: 2px solid #ddd; 
+	border-radius: 5px;
+  }
+
+  #login-password{
+	width: 457.61px; 
+	padding: 1.2rem; 
+	margin-bottom: 1.5rem; 
+	font-size: 1.2rem; 
+	border: 2px solid #ddd; 
+	border-radius: 5px
   }
   
   .auth-form input {
@@ -201,9 +226,19 @@
 	height:auto;
 	cursor:pointer;
 	transition: transform 0.2s ease;
+	border-radius: 10px;
 
   }
 
   .nav-icon:hover{
 		transform:scale(1.1);
+  }
+  
+  .cta-button{
+	  cursor:pointer;
+	  transition: transform 0.3s ease;
+  }
+  
+  .cta-button:hover{
+	  transform:scale(1.05);
   }

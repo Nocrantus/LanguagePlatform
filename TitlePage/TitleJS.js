@@ -27,5 +27,5 @@ function redirectToLogin() {
 }
 
 function placeholder(event){
-	event.preventDefault();
+	window.alert("This function has yet to be implemented / tested");
 }
