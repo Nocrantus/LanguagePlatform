@@ -13,3 +13,7 @@ function redirectToLibraryBrowser() {
 function redirectToLogin() {
 	window.location.href = "./login.html";
 }
+
+function placeholder() {
+	window.alert("This function has yet to be implemented / tested");
+}
