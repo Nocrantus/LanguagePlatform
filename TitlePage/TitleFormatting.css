@@ -9,9 +9,11 @@
 
 .nav {
 	display: flex;
-	flex-direction:column;
+	flex-direction: column;
 	align-items: center;
 	gap: 20px;
+	margin-top: 40px;
+	margin-bottom: 
 }
 
 :root {
@@ -24,13 +26,53 @@
 	--text-light: #5f6368;
   }
   
-  body {
-	font-family: 'Google Sans', Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	color: var(--text-dark);
-	background-color: var(--white);
-  }
+	body { 
+		font-family: Arial, sans-serif; 
+		text-align: auto; 
+		margin: 0;
+		padding: 0;
+		color: var(--text-dark);
+		background-color: var(--white);
+	}
+	.container { 
+		width: 300px; 
+		margin: auto; 
+		padding: 20px; 
+		border: 1px solid #ccc; 
+	}
+	input, button { 
+		width: 95%; 
+		margin: 5px 0; 
+		padding: 10px; 
+	}
+	.auth-box { 
+		max-width: 400px; 
+		margin: 50px auto; 
+		padding: 20px; 
+		border: 1px solid #ccc; 
+	}
+	
+	.form-group { 
+		margin-bottom: 15px; 
+	}
+	
+	input { 
+		width: 100%; 
+		padding: 8px; 
+	}
+	
+	button { 
+		width: 100%; 
+		padding: 10px; 
+		background: #007bff; 
+		color: white; 
+		border: none; 
+		transition: all 0.2s ease;
+	}
+	
+	.hidden { 
+		display: none; 
+	}
   
   .title {
 	font-size: 5rem;
@@ -47,7 +89,7 @@
 	gap: 20px;
   }
   
-  /* Button Styles (consolidated) */
+  /* Button Styles */
   .btn {
 	padding: 10px 24px;
 	border-radius: 4px;
@@ -59,15 +101,12 @@
 	font-family: 'Fredoka', sans-serif;
 	text-align: center;
 	margin: 4px 2px;
-  }
-  
-  .btn-primary {
 	background-color: var(--primary-blue);
 	color: white;
 	border: none;
   }
   
-  .btn-primary:hover {
+  .btn:hover {
 	background-color: var(--dark-blue);
 	box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3),
 				0 1px 3px 1px rgba(66,133,244,0.15);
@@ -183,6 +222,7 @@
   
   .login-register-button:hover {
 	  cursor: pointer;
+	  transform: scale(1.01);
   }
   
   .form-icon {
@@ -265,6 +305,47 @@
 	  transform:scale(1.05);
   }
   
+  .primary {
+	  background: var(--white); 
+	  color: var(--primary-blue); 
+	  padding: 1.2rem 2.5rem; 
+	  font-size: 1.3rem;
+  }
+  
+  .secondary {
+	  background: transparent; 
+	  color: var(--white); 
+	  border: 2px solid var(--white); 
+	  padding: 1.2rem 2.5rem; 
+	  font-size: 1.3rem;
+  }
+  
+  .final-cta{
+	  background: var(--primary-blue); 
+	  padding: 4rem; 
+	  border-radius: 10px; 
+	  text-align: center; 
+	  margin: 4rem 0;
+  }
+  
+  .final-cta h2{
+	  font-size: 2.5rem; 
+	  color: var(--white); 
+	  margin-bottom: 1.5rem;
+  }
+  
+  .final-cta p {
+	font-size: 1.5rem; 
+	color: var(--light-blue); 
+	margin-bottom: 2.5rem;
+  }
+  
+  .cta-buttons {
+	  display: flex; 
+	  justify-content: center; 
+	  gap: 1.5rem;
+  }
+  
   /* Card Styles */
   .card {
 	background: var(--white);
@@ -326,4 +407,25 @@
 	text-decoration: none;
   }
   
- 
+	.main-footer{
+		background: var(--text-dark); 
+		color: var(--white); 
+		padding: 3rem 0 1rem; 
+	}
+	.footer-content{
+		max-width: 1200px; 
+		margin: 0 auto; 
+		padding: 0 2rem;
+		text-align: center;
+	}
+	
+	.footer-content h3{
+		font-size: 2rem; 
+		margin-bottom: 0.5rem; 
+		color: #aaa;	
+	}
+	
+	.footer-content p{
+		font-size: 1.2rem; 
+		color: #aaa;
+	}

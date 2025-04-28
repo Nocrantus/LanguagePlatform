@@ -9,16 +9,6 @@
 
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style>
-		body { font-family: Arial, sans-serif; text-align: auto; }
-		.container { width: 300px; margin: auto; padding: 20px; border: 1px solid #ccc; }
-		input, button { width: 95%; margin: 5px 0; padding: 10px; }
-		.auth-box { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; }
-		.form-group { margin-bottom: 15px; }
-		input { width: 100%; padding: 8px; }
-		button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; }
-		.hidden { display: none; }
-	</style>
 </head>
 
 </head>
@@ -28,18 +18,18 @@
 	<div class="auth-box">
 		<!-- Login Form -->
 		<div id="login-form">
-		  <h2>Login</h2>
-		  <div class="form-group">
-			<input type="email" id="login-email" placeholder="Email">
-		  </div>
-		  <div class="form-group">
-			<input type="password" id="login-password" placeholder="Password">
-		  </div>
-		  <button class="login-register-button" onclick="login()">Login</button>
-		  <p>
-			<a href="#" onclick="showForm('register')">Register</a> | 
-			<a href="#" onclick="showForm('forgot')">Forgot Password?</a>
-		  </p>
+			<h2>Login</h2>
+			<div class="form-group">
+				<input type="email" id="login-email" placeholder="Email">
+			</div>
+			<div class="form-group">
+				<input type="password" id="login-password" placeholder="Password">
+			</div>
+			<button class="login-register-button" onclick="login()">Login</button>
+			<p>
+				<a href="#" onclick="showForm('register')">Register</a> | 
+				<a href="#" onclick="showForm('forgot')">Forgot Password?</a>
+			</p>
 		</div>
 	  
 		<!-- Register Form -->
@@ -64,7 +54,7 @@
 		  <button class="login-register-button" onclick="sendReset()">Send Reset Link</button>
 		  <p><a href="#" onclick="showForm('login')">Back to Login</a></p>
 		</div>
-	  </div>
+	</div>
 	  
 	  <script>
 		function showForm(formType) {
@@ -141,8 +131,7 @@
 		}
 	  </script>
 
-<script src="server.js"></script>
-				
+	<script src="server.js"></script>
 				
 	
 	<div class="nav">
@@ -152,41 +141,40 @@
 	</div>
 
 	<div class = "icon-nav">
-			<img src="TitlePage/Library.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
-			<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
+		<img src="TitlePage/Library.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
+		<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
+		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
 	</div>
 
 
 
 	<!-- account and public decks -->
-	<section class="final-cta" style="background: var(--primary-blue); padding: 4rem; border-radius: 10px; text-align: center; margin: 4rem 0;">
-		<h2 style="font-size: 2.5rem; color: var(--white); margin-bottom: 1.5rem;">Ready to Transform Your Study Habits?</h2>
-		<p style="font-size: 1.5rem; color: var(--light-blue); margin-bottom: 2.5rem;">Join thousands of students who are studying smarter with Camelingo</p>
-		<div class="cta-buttons" style="display: flex; justify-content: center; gap: 1.5rem;">
-			<button class="cta-button primary" onclick="redirectToRegister()" style="background: var(--white); color: var(--primary-blue); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+	<section class="final-cta">
+		<h2>Ready to Transform Your Study Habits?</h2>
+		<p>Join thousands of students who are studying smarter with Camelingo</p>
+		<div class="cta-buttons">
+			<button class="cta-button primary" onclick="redirectToRegister()">
 				<i class="fas fa-user-plus"></i> Create Free Account
 			</button>
-			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()" style="background: transparent; color: var(--white); border: 2px solid var(--white); padding: 1.2rem 2.5rem; font-size: 1.3rem;">
+			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()">
 				<i class="fas fa-book-open"></i> Browse Public Decks
 			</button>
 		</div>
 	</section>
-</main>
 
-<footer class="main-footer" style="background: var(--text-dark); color: var(--white); padding: 3rem 0 1rem;">
-	<div class="footer-content" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
-		<div style="text-align: center; margin-bottom: 2rem;">
-			<h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: #aaa;">Camelingo</h3>
-			<p style="font-size: 1.2rem; color: #aaa;">Smart Learning for Students</p>
+	<footer class="main-footer">
+		<div class="footer-content">
+			<div style="margin-bottom: 2rem;">
+				<h3>Camelingo</h3>
+				<p>Smart Learning for Students</p>
+			</div>
+			<div style="margin-top: 2rem;">
+				<p>&copy; 2025 Camelingo. All rights reserved.</p>
+			</div>
 		</div>
-		<div style="text-align: center; margin-top: 2rem;">
-			<p style="font-size: 1.1rem; color: #aaa;">&copy; 2025 Camelingo. All rights reserved.</p>
-		</div>
-	</div>
-</footer>
+	</footer>
 
-
+<!--
 	<div class="reviews">
 		<h1>Satisfied Customers:</h1>
 		
@@ -206,7 +194,7 @@
 		</div>
 		
 	</div>
-
+	--!>
 
 	<!-- Previous HTML content remains the same -->
 
@@ -261,9 +249,5 @@
     // Run check on page load
     window.onload = checkAuth;
 </script>
-
-</body>
-</html>
-
 </body>
 </html>
