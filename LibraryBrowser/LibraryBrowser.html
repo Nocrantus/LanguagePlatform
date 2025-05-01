@@ -5,118 +5,151 @@
   <title>Browse Library</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f6fc;
+      color: #022c43;
+      margin: 0;
       padding: 20px;
     }
+
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background-color: #0366d6;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
     }
+
     .search-section {
       margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    input[type="text"] {
-      padding: 8px;
-      width: 200px;
+
+    input[type="text"], select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
     }
-    .filter-section {
-      display: inline-block;
-      margin-left: 10px;
+
+    button {
+      background-color: #0366d6;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+
+    button:hover {
+      background-color: #024c9a;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
       margin-top: 20px;
     }
-    th, td {
-      border: 1px solid #aaa;
-      padding: 10px;
-      text-align: left;
+
+    .card {
+      background-color: white;
+      padding: 15px;
+      border: 1px solid #dce6f1;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
   <div class="top-bar">
-    <h1>Browse Library</h1>
+    <h1>📚 Browse Library</h1>
     <button onclick="logout()">Log Out</button>
   </div>
 
   <div class="search-section">
-    <label for="search">Search...</label>
-    <input type="text" id="search" placeholder="Biochem">
-    <button onclick="searchLibrary()">🔍</button>
-    <div class="filter-section">
-      <label for="filter">Filter:</label>
-      <select id="filter">
-        <option value="all">All</option>
-        <option value="flashcard">Flashcard</option>
-        <option value="studyguide">Study Guide</option>
-        <option value="practicetest">Practice Test</option>
-      </select>
-    </div>
+    <input type="text" id="search" placeholder="Search decks...">
+    <select id="filter">
+      <option value="all">All Types</option>
+      <option value="flashcard">Flashcard</option>
+      <option value="studyguide">Study Guide</option>
+      <option value="practicetest">Practice Test</option>
+    </select>
+    <button onclick="searchLibrary()">🔍 Search</button>
   </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Name of Deck</th>
-        <th>Type</th>
-        <th>User</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Dynamic content will go here -->
-    </tbody>
-  </table>
+  <div class="card-container" id="cardContainer">
+    <!-- Deck cards will be injected here -->
+  </div>
 
   <script>
-     if (!localStorage.getItem("username")) {
-        localStorage.setItem("username", "user123");
+    if (!localStorage.getItem("username")) {
+      window.location.href = "login.html";
     }
 
-    // Function to populate library table
-    window.onload = function () {
-        loadLibrary();
-    };
+    const library = JSON.parse(localStorage.getItem("library")) || [];
 
-    function loadLibrary(filterValue = "all", searchQuery = "") {
-        const library = JSON.parse(localStorage.getItem("library")) || [];
-        const tableBody = document.querySelector("table tbody");
-        tableBody.innerHTML = "";
+    function renderLibrary(filtered = library) {
+      const container = document.getElementById("cardContainer");
+      container.innerHTML = "";
 
-        const filteredLibrary = library.filter(deck => {
-            const matchesType = filterValue === "all" || deck.type?.toLowerCase() === filterValue;
-            const matchesSearch = deck.name?.toLowerCase().includes(searchQuery.toLowerCase());
-            return matchesType && matchesSearch;
-        });
+      if (filtered.length === 0) {
+        container.innerHTML = "<p>No decks found.</p>";
+        return;
+      }
 
-        filteredLibrary.forEach((deck, index) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${deck.name || "—"}</td>
-                <td>${deck.type || "Flashcard"}</td>
-                <td>${deck.user || "—"}</td>
-            `;
-            tableBody.appendChild(row);
-        });
+      filtered.forEach(deck => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${deck.name || "Untitled Deck"}</h3>
+          <p><strong>Type:</strong> ${deck.type || "Flashcard"}</p>
+          <p><strong>User:</strong> ${deck.user || "Unknown"}</p>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    // Search and Filter
     function searchLibrary() {
-        const searchQuery = document.getElementById("search").value.trim();
-        const filterValue = document.getElementById("filter").value;
-        loadLibrary(filterValue, searchQuery);
+      const query = document.getElementById("search").value.toLowerCase();
+      const filter = document.getElementById("filter").value;
+
+      const filtered = library.filter(deck => {
+        const matchesType = filter === "all" || (deck.type && deck.type.toLowerCase() === filter);
+        const matchesQuery = deck.name && deck.name.toLowerCase().includes(query);
+        return matchesType && matchesQuery;
+      });
+
+      renderLibrary(filtered);
+    }
+    
+    function logout() {
+      localStorage.removeItem("username");
+      window.location.href = "index.html";
     }
 
-    // Log out
-    function logout() {
-        localStorage.removeItem("username");
-        window.location.href = "login.html";
-    }
+    window.onload = () => renderLibrary();
   </script>
 
 </body>
