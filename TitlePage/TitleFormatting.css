@@ -31,10 +31,10 @@ html {
   }
   
 	body { 
-		font-family: Arial, sans-serif; 
-		text-align: auto; 
 		margin: 0;
 		padding: 0;
+		top: 0;
+		font-family: Arial, sans-serif; 
 		color: var(--text-dark);
 		background-color: var(--white);
 	}
