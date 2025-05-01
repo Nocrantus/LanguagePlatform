@@ -15,7 +15,7 @@ function redirectToLogin() {
 }
 
 function redirectToRegister() {
-	window.location.href='#title';
+	window.location.href='#top-anchor';
 	document.getElementById(`login-form`).classList.add('hidden');
 	document.getElementById(`register-form`).classList.remove('hidden');
 }
