@@ -7,133 +7,65 @@
 	<script src="TitlePage/TitleJS.js"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
 
+	<script src="/js/auth.js" defer></script>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-</head>
-
 <body>
-	<h1 class="title">Welcome to Camelingo!</h1>
-	<div class="auth-box">
-		<!-- Login Form -->
-		<div id="login-form">
-			<h2>Login</h2>
-			<div class="form-group">
-				<input type="email" id="login-email" placeholder="Email">
+	<h1 id="title">Welcome to Camelingo!</h1>
+	<div class="main-container">
+	<section class="auth-section">
+		<div class="auth-container">
+			
+			<!-- Login Form -->
+			<div id="login-form"><p><b>Login</b></p>
+				<div class="form-group">
+					<label for="login-email">Email</label>
+					<input type="email" id="login-email" class="form-control" placeholder="your@email.com" required>
+				</div>
+				<div class="form-group">
+					<label for="login-password">Password</label>
+					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="button" id="login-btn" class="btn btn-primary">Login</button>
+				<div class="form-group text-center" style="margin-top: 1rem;">
+					<a href="reset-password.html" id="show-forgot-btn" class="text-link">Forgot password?</a>
+				</div>
+				<div id="login-error" class="error-message hidden"></div>
 			</div>
-			<div class="form-group">
-				<input type="password" id="login-password" placeholder="Password">
+			
+			<!-- Register Form -->
+			<div id="register-form" class="hidden"><p><b>Register</b></p>
+				<div class="form-group">
+					<label for="register-email">Email</label>
+					<input type="email" id="register-email" class="form-control" placeholder="your@email.com" required>
+				</div>
+				<div class="form-group">
+					<label for="register-password">Password</label>
+					<input type="password" id="register-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<div class="form-group">
+					<label for="confirm-password">Confirm Password</label>
+					<input type="password" id="confirm-password" class="form-control" placeholder="••••••••" required>
+				</div>
+				<button type="button" id="register-btn" class="btn btn-primary">Create Account</button>
+				<div id="register-error" class="error-message hidden"></div>
 			</div>
-			<button class="login-register-button" onclick="login()">Login</button>
-			<p>
-				<a href="#" onclick="showForm('register')">Register</a> | 
-				<a href="#" onclick="showForm('forgot')">Forgot Password?</a>
-			</p>
-		</div>
-	  
-		<!-- Register Form -->
-		<div id="register-form" class="hidden">
-		  <h2>Register</h2>
-		  <div class="form-group">
-			<input type="email" id="register-email" placeholder="Email">
-		  </div>
-		  <div class="form-group">
-			<input type="password" id="register-password" placeholder="Password">
-		  </div>
-		  <button class="login-register-button" onclick="register()">Register</button>
-		  <p><a href="#" onclick="showForm('login')">Back to Login</a></p>
-		</div>
-	  
-		<!-- Forgot Password Form -->
-		<div id="forgot-form" class="hidden">
-		  <h2>Reset Password</h2>
-		  <div class="form-group">
-			<input type="email" id="forgot-email" placeholder="Email">
-		  </div>
-		  <button class="login-register-button" onclick="sendReset()">Send Reset Link</button>
-		  <p><a href="#" onclick="showForm('login')">Back to Login</a></p>
+			
+			<!-- Forgot Password Form -->
+			<div id="forgot-form" class="hidden">
+				<div class="form-group">
+					<label for="forgot-email">Email</label>
+					<input type="email" id="forgot-email" class="form-control" placeholder="your@email.com" required>
+				</div>
+				<button type="button" id="forgot-btn" class="btn btn-primary">Send Reset Link</button>
+				<div id="forgot-error" class="error-message hidden"></div>
+			</div>
 		</div>
 	</div>
-	  
-	  <script>
-		function showForm(formType) {
-		  document.querySelectorAll('[id$="-form"]').forEach(el => el.classList.add('hidden'));
-		  document.getElementById(`${formType}-form`).classList.remove('hidden');
-		}
-	  
-		async function login() {
-		  const email = document.getElementById('login-email').value;
-		  const password = document.getElementById('login-password').value;
-	  
-		  try {
-			const response = await fetch('/api/auth/login', {
-			  method: 'POST',
-			  headers: { 'Content-Type': 'application/json' },
-			  body: JSON.stringify({ email, password })
-			});
-	  
-			const data = await response.json();
-			if (response.ok) {
-			  localStorage.setItem('token', data.token);
-			  window.location.href = '/dashboard';
-			} else {
-			  alert(data.message);
-			}
-		  } catch (err) {
-			alert('Login failed');
-		  }
-		}
-	  
-		async function register() {
-		  const email = document.getElementById('register-email').value;
-		  const password = document.getElementById('register-password').value;
-	  
-		  try {
-			const response = await fetch('/api/auth/register', {
-			  method: 'POST',
-			  headers: { 'Content-Type': 'application/json' },
-			  body: JSON.stringify({ email, password })
-			});
-	  
-			if (response.ok) {
-			  alert('Registration successful! Please login.');
-			  showForm('login');
-			} else {
-			  const data = await response.json();
-			  alert(data.message);
-			}
-		  } catch (err) {
-			alert('Registration failed');
-		  }
-		}
-	  
-		async function sendReset() {
-		  const email = document.getElementById('forgot-email').value;
-		  
-		  try {
-			const response = await fetch('/api/auth/forgot-password', {
-			  method: 'POST',
-			  headers: { 'Content-Type': 'application/json' },
-			  body: JSON.stringify({ email })
-			});
-	  
-			if (response.ok) {
-			  alert('Reset instructions sent to your email');
-			  showForm('login');
-			} else {
-			  const data = await response.json();
-			  alert(data.message);
-			}
-		  } catch (err) {
-			alert('Password reset failed');
-		  }
-		}
-	  </script>
-
-	<script src="server.js"></script>
-				
-	<!-- Navigation Buttons --!>
+	</section>
+	<!--navigation buttons-->
 	<div class="nav">
 		<button class="btn btn-primary" onclick="placeholder()">Browse Library</button>
 		<button class="btn btn-primary" onclick="placeholder()">Create New Deck</button>
@@ -144,9 +76,7 @@
 		<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
 		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
 	</div>
-
-
-
+	
 	<!-- account and public decks -->
 	<section class="final-cta">
 		<h2>Ready to Transform Your Study Habits?</h2>
@@ -160,8 +90,9 @@
 			</button>
 		</div>
 	</section>
-	
-	<!--footer and copyright--!>
+</main>
+
+	<!-- Footer and Copyright -->
 	<footer class="main-footer">
 		<div class="footer-content">
 			<div style="margin-bottom: 2rem;">
@@ -173,59 +104,12 @@
 			</div>
 		</div>
 	</footer>
+	
 
-	<!-- Previous HTML content remains the same -->
+	<script src="/js/auth.js" defer></script>
+	
+</body>
+</html>
 
-<!-- Move this script to the bottom of the body -->
-<script>
-    //login function with MongoDB 
-    async function login() {
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-        
-        // Basic client-side validation
-        if (!username || !password) {
-            alert('Please enter both username and password');
-            return;
-        }
-        
-        try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password })
-            });
-            
-            const data = await response.json();
-            
-            if (response.ok) {
-                // Store user data
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('username', data.username);
-                
-                // Redirect to dashboard
-                window.location.href = 'LibraryBrowser.html';
-            } else {
-                alert(data.message || 'Login failed');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('Network error. Please try again.');
-        }
-    }
-
-    // Check if user is already logged in
-    function checkAuth() {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            window.location.href = 'LibraryBrowser.html';
-        }
-    }
-    
-    // Run check on page load
-    window.onload = checkAuth;
-</script>
 </body>
 </html>

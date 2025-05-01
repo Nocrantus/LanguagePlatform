@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Deck Creator</title>
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="DeckCreatorFormatting.css">
+    
+</head>
+
+<body>
+    <h1>Create New Deck</h1>
+
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+
+    <label for="name">Name of Deck:</label>
+    <input type="text" id="name" name="name" required minlength="4" maxlength="20" size="20"/>
+
+    <br><br>
+
+    <table id="terms-table">
+        <thead>
+            <tr>
+                <th>Term</th>
+                <th>Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" class="term-input"></td>
+                <td><input type="text" class="def-input"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="addTerm()">Add Term</button>
+    <button onclick="createFlashcards()">Create Flashcards</button>
+
+    <div class="flashcard-container" id="flashcards" style="display:none"></div>
+
+    <script>
+        // Save deck name
+        document.getElementById("name").addEventListener("input", function() {
+            localStorage.setItem("deckName", this.value);
+        });
+
+        window.onload = function() {
+            const savedName = localStorage.getItem("deckName");
+            if (savedName) document.getElementById("name").value = savedName;
+        };
+
+        function addTerm() {
+            const table = document.getElementById("terms-table").getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="text" class="term-input"></td>
+                <td><input type="text" class="def-input"></td>
+            `;
+        }
+
+        function createFlashcards() {
+            const terms = Array.from(document.getElementsByClassName('term-input')).map(input => input.value);
+            const defs = Array.from(document.getElementsByClassName('def-input')).map(input => input.value);
+            const flashcardsDiv = document.getElementById('flashcards');
+            flashcardsDiv.innerHTML = '';
+            flashcardsDiv.style.display = "flex";
+
+            for (let i = 0; i < terms.length; i++) {
+                const card = document.createElement('div');
+                card.className = 'flashcard';
+                card.onclick = () => card.classList.toggle('flipped');
+                card.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">${terms[i]}</div>
+                        <div class="flashcard-back">${defs[i]}</div>
+                    </div>
+                `;
+                flashcardsDiv.appendChild(card);
+            }
+
+            const deckName = document.getElementById("name").value;
+            const deck = { name: deckName, terms, defs };
+            localStorage.setItem("savedDeck", JSON.stringify(deck)); // Save to library
+        }
+
+        function logout() {
+            localStorage.removeItem("deckName");
+            localStorage.removeItem("savedDeck");
+            localStorage.removeItem("username");
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
+</html>
