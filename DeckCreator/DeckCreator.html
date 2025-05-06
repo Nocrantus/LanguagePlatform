@@ -5,11 +5,14 @@
     <title>Deck Creator</title>
     <link rel="stylesheet" href="/css/base.css" />
     <link rel="stylesheet" href="DeckCreatorFormatting.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
+
     
 </head>
 
 <body>
     <h1>Create New Deck</h1>
+    
 
     <button class="logout-btn" onclick="logout()">Log Out</button>
 
@@ -35,20 +38,39 @@
 
     <button onclick="addTerm()">Add Term</button>
     <button onclick="createFlashcards()">Create Flashcards</button>
+    <div class="back-to-home">
+        <button onclick="window.location.href='../index.html';">Back to Home Page</button>
+    </div>
 
-    <div class="flashcard-container" id="flashcards" style="display:none"></div>
+    <div class="flashcard-section">
+        <div class="flashcard-viewer" id="flashcard-viewer" style="display:none">
+          <div class="flashcard" id="flashcard" onclick="flipCard()">
+            <div class="flashcard-inner" id="flashcard-inner">
+              <div class="flashcard-front" id="card-front"></div>
+              <div class="flashcard-back" id="card-back"></div>
+            </div>
+          </div>
+          <div class="nav-buttons">
+            <button onclick="prevCard()">←</button>
+            <span id="card-counter">Card 1 of 1</span>
+            <button onclick="nextCard()">→</button>
+          </div>
+        </div>
+      </div>
 
-    <script>
-        // Save deck name
-        document.getElementById("name").addEventListener("input", function() {
+      <script>
+        let flashcards = [];
+        let currentIndex = 0;
+    
+        document.getElementById("name").addEventListener("input", function () {
             localStorage.setItem("deckName", this.value);
         });
-
-        window.onload = function() {
+    
+        window.onload = function () {
             const savedName = localStorage.getItem("deckName");
             if (savedName) document.getElementById("name").value = savedName;
         };
-
+    
         function addTerm() {
             const table = document.getElementById("terms-table").getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
@@ -57,32 +79,67 @@
                 <td><input type="text" class="def-input"></td>
             `;
         }
-
+    
         function createFlashcards() {
-            const terms = Array.from(document.getElementsByClassName('term-input')).map(input => input.value);
-            const defs = Array.from(document.getElementsByClassName('def-input')).map(input => input.value);
-            const flashcardsDiv = document.getElementById('flashcards');
-            flashcardsDiv.innerHTML = '';
-            flashcardsDiv.style.display = "flex";
-
-            for (let i = 0; i < terms.length; i++) {
-                const card = document.createElement('div');
-                card.className = 'flashcard';
-                card.onclick = () => card.classList.toggle('flipped');
-                card.innerHTML = `
-                    <div class="flashcard-inner">
-                        <div class="flashcard-front">${terms[i]}</div>
-                        <div class="flashcard-back">${defs[i]}</div>
-                    </div>
-                `;
-                flashcardsDiv.appendChild(card);
+            const terms = Array.from(document.getElementsByClassName('term-input')).map(input => input.value.trim());
+            const defs = Array.from(document.getElementsByClassName('def-input')).map(input => input.value.trim());
+    
+            flashcards = terms.map((term, i) => ({
+                term,
+                def: defs[i]
+            }));
+    
+            if (flashcards.length === 0 || flashcards.some(card => !card.term || !card.def)) {
+                alert("Please enter at least one valid term and definition.");
+                return;
             }
-
+    
+            // Save deck to localStorage
             const deckName = document.getElementById("name").value;
-            const deck = { name: deckName, terms, defs };
-            localStorage.setItem("savedDeck", JSON.stringify(deck)); // Save to library
+            const newDeck = {
+                name: deckName,
+                type: "Flashcards",
+                modified: new Date().toLocaleDateString(),
+                cards: flashcards
+            };
+    
+            const allDecks = JSON.parse(localStorage.getItem("decks")) || [];
+            allDecks.push(newDeck);
+            localStorage.setItem("decks", JSON.stringify(allDecks));
+    
+            // Start flashcard viewer
+            currentIndex = 0;
+            showCard();
+            document.getElementById("flashcard-viewer").style.display = "block";
+            alert("Deck saved successfully!");
         }
-
+    
+        function showCard() {
+            const card = flashcards[currentIndex];
+            document.getElementById("card-front").textContent = card.term;
+            document.getElementById("card-back").textContent = card.def;
+            document.getElementById("card-counter").textContent = `Card ${currentIndex + 1} of ${flashcards.length}`;
+            document.getElementById("flashcard-inner").classList.remove("flipped");
+        }
+    
+        function flipCard() {
+            document.getElementById("flashcard-inner").classList.toggle("flipped");
+        }
+    
+        function nextCard() {
+            if (currentIndex < flashcards.length - 1) {
+                currentIndex++;
+                showCard();
+            }
+        }
+    
+        function prevCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showCard();
+            }
+        }
+    
         function logout() {
             localStorage.removeItem("deckName");
             localStorage.removeItem("savedDeck");
@@ -90,5 +147,7 @@
             window.location.href = "login.html";
         }
     </script>
+    
+    
 </body>
 </html>

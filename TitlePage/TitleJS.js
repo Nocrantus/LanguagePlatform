@@ -77,3 +77,23 @@ function openNav3() {
 	document.getElementById("mySidenav").style.width = "0";
 	document.getElementById("main").style.marginLeft= "0";
 }
+function showFeaturePopup(message) {
+	const popup = document.getElementById("feature-popup");
+	const msg = document.getElementById("feature-popup-message");
+	msg.textContent = message;
+	popup.style.display = "flex";
+  }
+  
+  function closeFeaturePopup() {
+	document.getElementById("feature-popup").style.display = "none";
+  }
+  
+  // Optional: close when clicking outside the popup
+  window.addEventListener("click", function (e) {
+	const popup = document.getElementById("feature-popup");
+	const content = document.querySelector(".popup-content");
+	if (e.target === popup) {
+	  closeFeaturePopup();
+	}
+  });
+  

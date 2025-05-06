@@ -1,85 +1,193 @@
+/* General page styling */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f0f6fc;
-    color: #022c43;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    color: navy;
-    text-align: center;
-  }
-  
- 
-  .logout-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #0366d6;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 6px;
+  font-family: 'Fredoka', sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
 
-    text-align: center;
-  }
-  
-  .logout-btn:hover {
-    background-color: #024c9a;
-  }
-  
+/* Title */
+h1 {
+  font-size: 2.5rem;
+  color: #57b7e4;
+  margin-bottom: 30px;
+}
 
-  .flashcard-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 20px;
-    color: white;
-    text-align: center;
-  }
-  
-  .flashcard {
-    width: 150px;
-    height: 100px;
-    perspective: 1000px;
-    cursor: pointer;
-  }
-  
-  .flashcard-inner {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
-  
-  .flashcard.flipped .flashcard-inner {
-    transform: rotateY(180deg);
-  }
+/* Input for deck name */
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 250px;
+  margin-bottom: 20px;
+}
 
-  .flashcard:hover {
-    transform: scale(1.02);
-  }
-  
-  .flashcard-front, .flashcard-back {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #333;
-    background: white;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .flashcard-back {
-    transform: rotateY(180deg);
-    background: white;
-  }
+/* Table for terms and definitions */
+#terms-table {
+  margin: 0 auto 20px auto;
+  border-collapse: collapse;
+  width: 90%;
+  max-width: 700px;
+  background: white;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#terms-table th,
+#terms-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+#terms-table th {
+  background-color: #e0f2f9;
+  font-weight: 600;
+}
+
+/* Buttons */
+button {
+  padding: 12px 20px;
+  margin: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Flashcards */
+.flashcard-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 100%;
+}
+
+
+.flashcard {
+  width: 300px;
+  aspect-ratio: 5 / 3;
+  perspective: 1000px;
+  cursor: pointer;
+  margin-bottom: 40px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  display: flex;
+}
+
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+  background-color: #f0f9ff;
+}
+
+.flashcard-section {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-buttons button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-buttons button:hover {
+  background-color: #0056b3;
+}
+
+#card-counter {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+
+/* Logout button positioning */
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #dc3545;
+}
+
+.logout-btn:hover {
+  background-color: #a71d2a;
+}
+
+.back-to-home {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.back-to-home button {
+  background-color: #57b7e4;
+  color: white;
+  font-size: 16px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.back-to-home button:hover {
+  background-color: #007bff;
+}
