@@ -64,11 +64,19 @@
 		<button class="btn btn-primary" onclick="redirectToDeckBrowser()">Browse Decks</button>
 	</div>
 	
-	<div class = "icon-nav">
-		<img src="TitlePage/Library.png" alt="Browse Library" onclick = "openNav1()" class="nav-icon">
-		<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "openNav2()" class="nav-icon">
-		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "openNav3()" class="nav-icon">
-	</div>
+	<div class="icon-nav">
+		<img src="TitlePage/Library.png" alt="Browse Library"
+			 onclick="showFeaturePopup(' Sorry this feature has not been implemented yet! This feature will let you explore the shared library of decks from other users.')"
+			 class="nav-icon">
+	  
+		<img src="TitlePage/Flashcards.png" alt="Create New Deck"
+			 onclick="showFeaturePopup('This feature will allow you to create your own flashcard deck.')"
+			 class="nav-icon">
+	  
+		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks"
+			 onclick="showFeaturePopup('This feature will allow you to browse decks shared publicly.')"
+			 class="nav-icon">
+	  </div>
 	<!-- account and public decks -->
 	<section class="final-cta">
 		<h2>Ready to Transform Your Study Habits?</h2>
@@ -122,6 +130,13 @@
 	  <div id="SideNav3" class="sidenav"> <!--Browse Decks-->
 		<a href="javascript:void(0)" class="closebtn" onclick="closeNav3()">&times;</a>
 		<a href="#">About</a>
+	  </div>
+	  
+	  <div id="feature-popup" class="popup-overlay" style="display: none;">
+		<div class="popup-content">
+		  <span class="close-btn" onclick="closeFeaturePopup()">&times;</span>
+		  <p id="feature-popup-message">Placeholder message here.</p>
+		</div>
 	  </div>
 	  
 </body>
