@@ -103,54 +103,7 @@
     <!-- Deck cards will be injected here -->
   </div>
 
-  <script>
-    if (!localStorage.getItem("username")) {
-      window.location.href = "login.html";
-    }
 
-    const library = JSON.parse(localStorage.getItem("library")) || [];
-
-    function renderLibrary(filtered = library) {
-      const container = document.getElementById("cardContainer");
-      container.innerHTML = "";
-
-      if (filtered.length === 0) {
-        container.innerHTML = "<p>No decks found.</p>";
-        return;
-      }
-
-      filtered.forEach(deck => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${deck.name || "Untitled Deck"}</h3>
-          <p><strong>Type:</strong> ${deck.type || "Flashcard"}</p>
-          <p><strong>User:</strong> ${deck.user || "Unknown"}</p>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function searchLibrary() {
-      const query = document.getElementById("search").value.toLowerCase();
-      const filter = document.getElementById("filter").value;
-
-      const filtered = library.filter(deck => {
-        const matchesType = filter === "all" || (deck.type && deck.type.toLowerCase() === filter);
-        const matchesQuery = deck.name && deck.name.toLowerCase().includes(query);
-        return matchesType && matchesQuery;
-      });
-
-      renderLibrary(filtered);
-    }
-    
-    function logout() {
-      localStorage.removeItem("username");
-      window.location.href = "index.html";
-    }
-
-    window.onload = () => renderLibrary();
-  </script>
 
 </body>
 </html>

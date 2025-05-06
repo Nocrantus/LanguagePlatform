@@ -13,6 +13,7 @@
 </head>
 
 <body>
+<div id="main">
 	<div id="top-anchor" style="top:0px "></div>
 	<h1 id="title">Welcome to Camelingo!</h1>
 	<div class="main-container">
@@ -29,7 +30,7 @@
 					<label for="login-password">Password</label>
 					<input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
 				</div>
-				<button type="button" id="login-btn" class="btn btn-primary" onclick = "placeholder()">Login</button>
+				<button type="button" id="login-btn" class="btn btn-primary" onclick = "setLoggedIn()">Login</button>
 				<div class="form-group text-center" style="margin-top: 1rem;">
 					<a href="reset-password.html" id="show-forgot-btn" class="text-link">Forgot password?</a>
 				</div>
@@ -58,16 +59,16 @@
 	</section>
 	<!--navigation buttons-->
 	<div class="nav">
-		<button class="btn btn-primary" onclick="redirectToLibraryBrowser()">(DEBUG) Browse Library</button>
-		<button class="btn btn-primary" onclick="redirectToDeckCreator()">(DEBUG) Create New Deck</button>
-		<button class="btn btn-primary" onclick="redirectToDeckBrowser()">(DEBUG) Browse Decks</button>
-	</div>
-	<div class = "icon-nav">
-		<img src="TitlePage/Library.png" alt="Browse Library" onclick = "placeholder()" class="nav-icon">
-		<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "placeholder()" class="nav-icon">
-		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "placeholder()" class="nav-icon">
+		<button class="btn btn-primary" onclick="redirectToLibraryBrowser()">Browse Library</button>
+		<button class="btn btn-primary" onclick="redirectToDeckCreator()">Create New Deck</button>
+		<button class="btn btn-primary" onclick="redirectToDeckBrowser()">Browse Decks</button>
 	</div>
 	
+	<div class = "icon-nav">
+		<img src="TitlePage/Library.png" alt="Browse Library" onclick = "openNav1()" class="nav-icon">
+		<img src="TitlePage/Flashcards.png" alt="Create New Deck" onclick = "openNav2()" class="nav-icon">
+		<img src="TitlePage/BrowseDecks.png" alt="Browse Decks" onclick = "openNav3()" class="nav-icon">
+	</div>
 	<!-- account and public decks -->
 	<section class="final-cta">
 		<h2>Ready to Transform Your Study Habits?</h2>
@@ -76,7 +77,7 @@
 			<button class="cta-button primary" onclick="redirectToRegister()">
 				<i class="fas fa-user-plus"></i> Create Free Account
 			</button>
-			<button class="cta-button secondary" onclick="redirectToLibraryBrowser()">
+			<button class="cta-button secondary" onclick="redirectToLogin()">
 				<i class="fas fa-book-open"></i> Browse Public Decks
 			</button>
 		</div>
@@ -95,12 +96,33 @@
 			</div>
 		</div>
 	</footer>
-	
+</div>
 
-	<script src="/js/auth.js" defer></script>
-	
-</body>
-</html>
 
+	<div id="SideNav1" class="sidenav"> <!--Browse Library-->
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav1()">&times;</a>
+		<a href="#">In your library, create personalized study guides, flashcards, and practice tests, 
+			all while accessing a collective hub filled with shared content. Join weekly challenges 
+			to test your skills and elevate your understanding. Start your journey with Camelingo today 
+			and make language learning fun!</a>
+	  </div>
+
+	  <div id="SideNav2" class="sidenav"> <!--Create Deck-->
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav2()">&times;</a>
+		<a href="#">Camelingo’s Clickable Flashcards transform vocabulary learning 
+			into a fun and interactive experience. Each flashcard is designed for 
+			quick access and can incorporate images, audio, and translation options, 
+			making it easier to remember words and phrases. Users can create their own 
+			Decks or explore flashcards shared by others in the community. The flexible design 
+			allows learners to study at their own pace, while the integrated quizzes help solidify knowledge. 
+			With our Clickable Flashcards, mastering a new language has never been more engaging. Start building 
+			your vocabulary today with this essential learning tool.</a>
+	  </div>
+
+	  <div id="SideNav3" class="sidenav"> <!--Browse Decks-->
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav3()">&times;</a>
+		<a href="#">About</a>
+	  </div>
+	  
 </body>
 </html>
